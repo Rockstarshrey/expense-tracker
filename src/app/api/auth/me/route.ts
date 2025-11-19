@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { connectToDatabase } from '@/lib/mongodb';
 import User from '@/models/User';
 import { getUserFromRequest } from '@/lib/auth';
 
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Find user by ID (exclude password)
     const user = await User.findById(tokenPayload.userId);

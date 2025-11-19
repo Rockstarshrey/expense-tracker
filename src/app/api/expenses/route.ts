@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { connectToDatabase } from '@/lib/mongodb';
 import Expense from '@/models/Expense';
 import { getUserFromRequest } from '@/lib/auth';
 
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Get query parameters for filtering
     const { searchParams } = new URL(request.url);
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Create new expense
     const expense = new Expense({

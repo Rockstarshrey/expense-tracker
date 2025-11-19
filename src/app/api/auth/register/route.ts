@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { connectToDatabase } from '@/lib/mongodb';
 import User from '@/models/User';
 import { generateToken } from '@/lib/auth';
 import mongoose from 'mongoose';
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });

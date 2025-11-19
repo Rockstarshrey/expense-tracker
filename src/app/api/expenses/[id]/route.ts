@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import clientPromise from '@/lib/mongodb';
+import { connectToDatabase } from '@/lib/mongodb';
 import Expense from '@/models/Expense';
 import { getUserFromRequest } from '@/lib/auth';
 import mongoose from 'mongoose';
@@ -31,7 +31,7 @@ export async function GET(
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
@@ -91,7 +91,7 @@ export async function PUT(
     const { amount, category, date, description } = await request.json();
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
@@ -202,7 +202,7 @@ export async function DELETE(
     }
 
     // Connect to database
-    await clientPromise;
+    await connectToDatabase();
 
     // Find and delete expense (verifying ownership)
     const result = await Expense.deleteOne({
