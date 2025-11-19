@@ -16,12 +16,12 @@ interface ExpenseFormProps {
   editingExpense?: Expense | null;
 }
 
-const categories = ['Food', 'Travel', 'Bills', 'Shopping', 'Other'];
+const categories = ['Food', 'Travel', 'Bills', 'Shopping', 'Other'] as const;
 
 export default function ExpenseForm({ isOpen, onClose, onSubmit, editingExpense }: ExpenseFormProps) {
   const [formData, setFormData] = useState({
     amount: '',
-    category: 'Other',
+    category: 'Other' as 'Food' | 'Travel' | 'Bills' | 'Shopping' | 'Other',
     date: format(new Date(), 'yyyy-MM-dd'),
     description: '',
   });
