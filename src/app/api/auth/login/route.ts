@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Find user by email (include password for comparison)
     const user = await User.findOne({ email: email.toLowerCase().trim() }).select('+password');
