@@ -31,7 +31,7 @@ export async function GET(
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
@@ -91,7 +91,7 @@ export async function PUT(
     const { amount, category, date, description } = await request.json();
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
@@ -202,7 +202,7 @@ export async function DELETE(
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Find and delete expense (verifying ownership)
     const result = await Expense.deleteOne({
