@@ -129,7 +129,7 @@ export default function ExpenseForm({ isOpen, onClose, onSubmit, editingExpense 
                 required
                 className="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                 value={formData.category}
-                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value as 'Food' | 'Travel' | 'Bills' | 'Shopping' | 'Other' })}
                 disabled={loading}
               >
                 {categories.map((category) => (
