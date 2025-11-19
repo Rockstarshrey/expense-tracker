@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Get query parameters for filtering
     const { searchParams } = new URL(request.url);
@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Create new expense
     const expense = new Expense({
