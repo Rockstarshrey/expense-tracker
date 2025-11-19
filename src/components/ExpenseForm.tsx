@@ -9,7 +9,7 @@ interface ExpenseFormProps {
   onClose: () => void;
   onSubmit: (expenseData: {
     amount: number;
-    category: string;
+    category: 'Food' | 'Travel' | 'Bills' | 'Shopping' | 'Other';
     date: string;
     description?: string;
   }) => Promise<{ success: boolean; error?: string }>;
