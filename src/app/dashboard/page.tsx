@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
   const handleUpdateExpense = async (expenseData: {
     amount: number;
-    category: string;
+    category: 'Food' | 'Travel' | 'Bills' | 'Shopping' | 'Other';
     date: string;
     description?: string;
   }) => {
