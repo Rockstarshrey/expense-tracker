@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
