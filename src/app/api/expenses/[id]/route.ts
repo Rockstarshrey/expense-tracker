@@ -178,7 +178,7 @@ export async function PUT(
 // DELETE: Delete expense
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Get user from JWT token
@@ -190,8 +190,11 @@ export async function DELETE(
       );
     }
 
+    // Await params to get the ID
+    const { id } = await params;
+
     // Validate expense ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { success: false, error: 'Invalid expense ID' },
         { status: 400 }
@@ -203,7 +206,7 @@ export async function DELETE(
 
     // Find and delete expense (verifying ownership)
     const result = await Expense.deleteOne({
-      _id: params.id,
+      _id: id,
       userId: tokenPayload.userId
     });
 
