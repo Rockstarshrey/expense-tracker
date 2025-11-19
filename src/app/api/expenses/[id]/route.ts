@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 // GET: Fetch single expense by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Get user from JWT token
@@ -19,8 +19,11 @@ export async function GET(
       );
     }
 
+    // Await params to get the ID
+    const { id } = await params;
+
     // Validate expense ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { success: false, error: 'Invalid expense ID' },
         { status: 400 }
@@ -32,7 +35,7 @@ export async function GET(
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
-      _id: params.id,
+      _id: id,
       userId: tokenPayload.userId
     });
 
@@ -61,7 +64,7 @@ export async function GET(
 // PUT: Update expense
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Get user from JWT token
@@ -73,8 +76,11 @@ export async function PUT(
       );
     }
 
+    // Await params to get the ID
+    const { id } = await params;
+
     // Validate expense ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { success: false, error: 'Invalid expense ID' },
         { status: 400 }
@@ -89,7 +95,7 @@ export async function PUT(
 
     // Find expense and verify ownership
     const expense = await Expense.findOne({
-      _id: params.id,
+      _id: id,
       userId: tokenPayload.userId
     });
 
