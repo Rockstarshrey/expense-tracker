@@ -1,12 +1,26 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { format } from 'date-fns';
 import { useExpenses, Expense } from '@/hooks/useExpenses';
 import Navbar from '@/components/Navbar';
 import ExpenseSummary from '@/components/ExpenseSummary';
 import ExpenseList from '@/components/ExpenseList';
 import ExpenseForm from '@/components/ExpenseForm';
+import {
+  Container,
+  Box,
+  Typography,
+  Button,
+  TextField,
+  MenuItem,
+  CircularProgress,
+  Alert,
+  Fade,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import { Add, FilterList } from '@mui/icons-material';
 
 const categories = ['All', 'Food', 'Travel', 'Bills', 'Shopping', 'Other'];
 
@@ -15,6 +29,8 @@ export default function DashboardPage() {
   const [selectedMonth, setSelectedMonth] = useState(format(new Date(), 'yyyy-MM'));
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { expenses, loading, error, addExpense, updateExpense, deleteExpense } = useExpenses(
     selectedCategory !== 'All' ? selectedCategory : undefined,
@@ -64,109 +80,157 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
         <Navbar />
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Loading expenses...</p>
-          </div>
-        </div>
-      </div>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: 'calc(100vh - 70px)',
+          }}
+        >
+          <Box sx={{ textAlign: 'center' }}>
+            <CircularProgress size={48} />
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+              Loading expenses...
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
         <Navbar />
-        <div className="flex items-center justify-center h-96">
-          <div className="text-center">
-            <div className="text-red-600 text-lg font-medium">Error loading expenses</div>
-            <p className="mt-2 text-gray-600">{error}</p>
-          </div>
-        </div>
-      </div>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+          <Alert severity="error" sx={{ borderRadius: 2 }}>
+            <Typography variant="subtitle1" fontWeight={600}>
+              Error loading expenses
+            </Typography>
+            <Typography variant="body2">{error}</Typography>
+          </Alert>
+        </Container>
+      </Box>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <Box 
+      sx={{ 
+        minHeight: '100vh', 
+        bgcolor: 'background.default',
+        transition: 'background-color 0.3s ease',
+      }}
+    >
       <Navbar />
 
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-            <p className="mt-1 text-sm text-gray-600">
-              Track and manage your expenses
-            </p>
-          </div>
+      <Container maxWidth="xl" sx={{ py: { xs: 3, sm: 4, md: 5 } }}>
+        <Fade in timeout={300}>
+          <Box>
+            {/* Header */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="h3" fontWeight={700} gutterBottom>
+                Dashboard
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Track and manage your expenses efficiently
+              </Typography>
+            </Box>
 
-          {/* Filters and Add Button */}
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
-            <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
-              <div>
-                <label htmlFor="category-filter" className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
-                </label>
-                <select
-                  id="category-filter"
-                  className="block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            {/* Filters and Add Button */}
+            <Box
+              sx={{
+                mb: 4,
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' },
+                gap: 2,
+                alignItems: { xs: 'stretch', sm: 'flex-end' },
+                justifyContent: 'space-between',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  gap: 2,
+                  flexGrow: 1,
+                }}
+              >
+                <TextField
+                  select
+                  label="Category"
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
+                  sx={{ minWidth: { xs: '100%', sm: 200 } }}
+                  InputProps={{
+                    startAdornment: <FilterList sx={{ mr: 1, color: 'action.active' }} />,
+                  }}
                 >
                   {categories.map((category) => (
-                    <option key={category} value={category}>
+                    <MenuItem key={category} value={category}>
                       {category}
-                    </option>
+                    </MenuItem>
                   ))}
-                </select>
-              </div>
+                </TextField>
 
-              <div>
-                <label htmlFor="month-filter" className="block text-sm font-medium text-gray-700 mb-1">
-                  Month
-                </label>
-                <input
+                <TextField
                   type="month"
-                  id="month-filter"
-                  className="block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  label="Month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
+                  sx={{ minWidth: { xs: '100%', sm: 200 } }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
-              </div>
-            </div>
+              </Box>
 
-            <button
-              onClick={() => setIsFormOpen(true)}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<Add />}
+                onClick={() => setIsFormOpen(true)}
+                sx={{
+                  background: 'linear-gradient(135deg, #10b981 0%, #047857 100%)',
+                  px: 3,
+                  py: 1.5,
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+                  },
+                }}
+              >
+                {isMobile ? 'Add' : 'Add Expense'}
+              </Button>
+            </Box>
+
+            {/* Summary and Expenses Grid */}
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: { xs: '1fr', lg: '380px 1fr' },
+                gap: 3,
+              }}
             >
-              Add Expense
-            </button>
-          </div>
+              {/* Summary Card */}
+              <Box>
+                <ExpenseSummary expenses={expenses} selectedMonth={selectedMonth} />
+              </Box>
 
-          {/* Summary and Expenses Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Summary Card */}
-            <div className="lg:col-span-1">
-              <ExpenseSummary
-                expenses={expenses}
-                selectedMonth={selectedMonth}
-              />
-            </div>
-
-            {/* Expenses List */}
-            <div className="lg:col-span-2">
-              <ExpenseList
-                expenses={expenses}
-                onEdit={handleEditExpense}
-                onDelete={handleDeleteExpense}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+              {/* Expenses List */}
+              <Box>
+                <ExpenseList
+                  expenses={expenses}
+                  onEdit={handleEditExpense}
+                  onDelete={handleDeleteExpense}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Fade>
+      </Container>
 
       {/* Expense Form Modal */}
       <ExpenseForm
@@ -175,6 +239,6 @@ export default function DashboardPage() {
         onSubmit={editingExpense ? handleUpdateExpense : handleAddExpense}
         editingExpense={editingExpense}
       />
-    </div>
+    </Box>
   );
 }
