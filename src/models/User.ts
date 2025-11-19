@@ -35,8 +35,6 @@ const UserSchema = new Schema<IUser>({
   timestamps: true
 });
 
-// Index for email uniqueness and performance
-UserSchema.index({ email: 1 });
 
 // Pre-save hook to hash password before saving
 UserSchema.pre('save', async function(next) {
