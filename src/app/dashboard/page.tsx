@@ -23,7 +23,7 @@ export default function DashboardPage() {
 
   const handleAddExpense = async (expenseData: {
     amount: number;
-    category: string;
+    category: 'Food' | 'Travel' | 'Bills' | 'Shopping' | 'Other';
     date: string;
     description?: string;
   }) => {
