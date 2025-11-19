@@ -24,3 +24,97 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Custom utility classes for expense tracker */
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Modal backdrop blur effect */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+}
+
+/* Custom form focus styles */
+.form-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Button hover transitions */
+.btn-transition {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Expense category badge colors */
+.category-food {
+  background-color: #fed7aa;
+  color: #9a3412;
+}
+
+.category-travel {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.category-bills {
+  background-color: #fecaca;
+  color: #991b1b;
+}
+
+.category-shopping {
+  background-color: #e9d5ff;
+  color: #6b21a8;
+}
+
+.category-other {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+/* Loading state styles */
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 640px) {
+  .mobile-center {
+    text-align: center;
+  }
+
+  .mobile-stack {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
