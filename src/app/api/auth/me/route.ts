@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Connect to database
-    await clientPromise();
+    await clientPromise;
 
     // Find user by ID (exclude password)
     const user = await User.findById(tokenPayload.userId);
